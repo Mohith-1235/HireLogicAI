@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useRef, useState } from 'react';
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -34,6 +35,8 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 export default function ProfilePage() {
   const { toast } = useToast();
   const avatarImage = PlaceHolderImages.find(img => img.id === 'candidate-4');
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -51,6 +54,17 @@ export default function ProfilePage() {
     });
   };
 
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="grid gap-6 max-w-2xl mx-auto">
       <Card>
@@ -63,11 +77,18 @@ export default function ProfilePage() {
         <CardContent>
           <div className="flex items-center gap-4 mb-8">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={avatarImage?.imageUrl} alt="Recruiter" data-ai-hint={avatarImage?.imageHint} />
+              <AvatarImage src={avatarPreview || avatarImage?.imageUrl} alt="Recruiter" data-ai-hint={avatarImage?.imageHint} />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
             <div>
-              <Button variant="outline">Change Photo</Button>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handlePhotoChange} 
+                className="hidden" 
+                accept="image/png, image/jpeg, image/gif"
+              />
+              <Button variant="outline" onClick={() => fileInputRef.current?.click()}>Change Photo</Button>
               <p className="text-xs text-muted-foreground mt-2">JPG, GIF or PNG. 1MB max.</p>
             </div>
           </div>
