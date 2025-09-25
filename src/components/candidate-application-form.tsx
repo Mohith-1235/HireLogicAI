@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Loader, Send } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const applicationSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -28,6 +28,12 @@ type ApplicationFormValues = z.infer<typeof applicationSchema>;
 export function CandidateApplicationForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
@@ -51,6 +57,10 @@ export function CandidateApplicationForm() {
         form.reset();
     }, 1500);
   };
+
+  if (!isClient) {
+    return null; // or a loading skeleton
+  }
 
   return (
     <Form {...form}>
