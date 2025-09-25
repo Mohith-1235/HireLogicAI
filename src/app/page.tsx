@@ -43,7 +43,7 @@ const features: {
   },
   {
     icon: <Calendar className="h-8 w-8 text-primary" />,
-    title: 'Interview Scheduling',
+    title: 'Interview To Attend',
     description:
       'Allow recruiters to schedule interviews and send automated invitations to candidates.',
   },
