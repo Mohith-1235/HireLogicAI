@@ -69,7 +69,7 @@ function UserNav() {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">Jane Doe</p>
-              <p className="text-xs leading-none text-foreground/80">
+              <p className="text-xs leading-none text-foreground/80 dark:text-foreground/100">
                 recruiter@hirelogic.ai
               </p>
             </div>
@@ -105,7 +105,7 @@ function UserNav() {
             </Avatar>
             <div className="flex-1 truncate">
               <p className="text-sm font-medium leading-tight truncate">Jane Doe</p>
-              <p className="text-xs text-muted-foreground truncate">
+              <p className="text-xs text-muted-foreground truncate dark:text-foreground/100">
                 recruiter@hirelogic.ai
               </p>
             </div>
@@ -117,7 +117,7 @@ function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">Jane Doe</p>
-            <p className="text-xs leading-none text-foreground/80">
+            <p className="text-xs leading-none text-foreground/80 dark:text-foreground/100">
               recruiter@hirelogic.ai
             </p>
           </div>
@@ -176,7 +176,7 @@ export default function DashboardLayout({
             </Link>
           </div>
         </SidebarHeader>
-        {isClient && (
+        {isClient ? (
         <SidebarContent className="p-2">
           <SidebarMenu>
             {navItems.map((item) => (
@@ -194,6 +194,15 @@ export default function DashboardLayout({
             ))}
           </SidebarMenu>
         </SidebarContent>
+        ) : (
+          <div className="p-2">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex items-center gap-2 p-2">
+                <div className="h-8 w-8 bg-gray-300 rounded-md animate-pulse"></div>
+                <div className="h-4 w-3/4 bg-gray-300 rounded-md animate-pulse"></div>
+              </div>
+            ))}
+          </div>
         )}
         <div className="mt-auto p-2 border-t border-sidebar-border">
           <UserNav />
