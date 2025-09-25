@@ -55,24 +55,11 @@
     ]
   },
   "firestore": {
-    "structure": [
-      {
-        "path": "/userAccounts/{userAccountId}",
-        "definition": {
-          "entityName": "UserAccount",
-          "schema": {
-            "$ref": "#/backend/entities/UserAccount"
-          },
-          "description": "Stores user account information. The 'userAccountId' parameter corresponds to the user's Firebase Auth UID, ensuring path-based ownership.",
-          "params": [
-            {
-              "name": "userAccountId",
-              "description": "The unique identifier for the user account, which matches the Firebase Auth UID."
-            }
-          ]
-        }
-      }
-    ],
-    "reasoning": "The data structure prioritizes simplicity and security. User accounts are stored in a dedicated collection. This structure enables simple security rules based on `request.auth.uid` and supports QAPs because each collection has a homogeneous security posture. The application focuses on AI interviewing, document verification, and candidate management; thus the structure is tailored to efficiently store and retrieve user data related to these activities, while adhering to the core design principles of Authorization Independence and Clarity of Intent."
+    "/userAccounts/{userAccountId}": {
+      "schema": {
+        "$ref": "#/entities/UserAccount"
+      },
+      "description": "Stores user account information. The 'userAccountId' parameter corresponds to the user's Firebase Auth UID."
+    }
   }
 }

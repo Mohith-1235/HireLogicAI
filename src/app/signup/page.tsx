@@ -30,6 +30,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { doc } from 'firebase/firestore';
+import { useFirestore, setDocumentNonBlocking } from '@/firebase';
 
 const formSchema = z
   .object({
@@ -50,6 +52,7 @@ export default function SignupPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const auth = getAuth();
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,9 +72,24 @@ export default function SignupPage() {
         values.email,
         values.password
       );
-      await updateProfile(userCredential.user, {
+      const user = userCredential.user;
+
+      await updateProfile(user, {
         displayName: values.name,
       });
+      
+      if (firestore) {
+        const [firstName, ...lastNameParts] = values.name.split(' ');
+        const userDocRef = doc(firestore, 'userAccounts', user.uid);
+        setDocumentNonBlocking(userDocRef, {
+            id: user.uid,
+            email: user.email,
+            firstName: firstName || '',
+            lastName: lastNameParts.join(' '),
+            createdAt: new Date().toISOString(),
+            termsOfServiceAccepted: true, // Assuming acceptance on signup
+        }, { merge: true });
+      }
 
       toast({
         title: 'Account Created',
@@ -83,6 +101,8 @@ export default function SignupPage() {
       let errorMessage = 'An unexpected error occurred. Please try again.';
       if (error.code === 'auth/email-already-in-use') {
         errorMessage = 'This email is already in use. Please try another one.';
+      } else if (error.code === 'auth/operation-not-allowed') {
+        errorMessage = 'Email/Password sign-up is not enabled. Please contact support.';
       }
       toast({
         variant: 'destructive',
