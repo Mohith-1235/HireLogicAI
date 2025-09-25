@@ -39,6 +39,7 @@ const features: {
     title: 'Candidate Profile Management',
     description:
       'Store and manage candidate profiles, interview history, and user verified documents in one place.',
+    href: '/dashboard/candidates',
   },
   {
     icon: <Calendar className="h-8 w-8 text-primary" />,
@@ -148,7 +149,7 @@ export default function LandingPage() {
 
                 if (feature.href) {
                   return (
-                    <Link href={feature.href} target="_blank" rel="noopener noreferrer" key={feature.title}>
+                    <Link href={feature.href} target={feature.href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" key={feature.title}>
                       {card}
                     </Link>
                   );
