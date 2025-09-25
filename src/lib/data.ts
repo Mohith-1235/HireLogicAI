@@ -1,3 +1,4 @@
+
 export type Candidate = {
   id: string;
   name: string;
@@ -29,11 +30,14 @@ const interviews: Interview[] = [
   { id: 'int-101', candidateId: 'can-1', date: '2024-08-05', time: '10:00 AM', type: 'AI Screening', status: 'Completed' },
   { id: 'int-102', candidateId: 'can-1', date: '2024-08-10', time: '02:00 PM', type: 'Technical', status: 'Scheduled' },
   { id: 'int-201', candidateId: 'can-2', date: '2024-08-06', time: '11:00 AM', type: 'AI Screening', status: 'Completed' },
+  { id: 'int-202', candidateId: 'can-2', date: '2024-08-08', time: '03:00 PM', type: 'Technical', status: 'Completed' },
+  { id: 'int-203', candidateId: 'can-2', date: '2024-08-10', time: '10:00 AM', type: 'HR Round', status: 'Completed' },
   { id: 'int-301', candidateId: 'can-3', date: '2024-08-07', time: '09:00 AM', type: 'AI Screening', status: 'Completed' },
-  { id: 'int-302', candidateId: 'can-3', date: '2024-8-12', time: '11:30 AM', type: 'HR Round', status: 'Scheduled' },
-  { id: 'int-401', candidateId: 'can-4', date: '2024-08-08', time: '03:00 PM', type: 'AI Screening', status: 'Scheduled' },
+  { id: 'int-302', candidateId: 'can-3', date: '2024-08-12', time: '11:30 AM', type: 'HR Round', status: 'Scheduled' },
+  { id: 'int-401', candidateId: 'can-4', date: '2024-08-08', time: '03:00 PM', type: 'AI Screening', status: 'Completed' },
+  { id: 'int-402', candidateId: 'can-4', date: '2024-08-12', time: '04:00 PM', type: 'Technical', status: 'Scheduled' },
   { id: 'int-501', candidateId: 'can-5', date: '2024-08-09', time: '10:30 AM', type: 'AI Screening', status: 'Canceled' },
-  { id: 'int-601', candidateId: 'can-6', date: '2024-08-09', time: '01:00 PM', type: 'AI Screening', status: 'Scheduled' },
+  { id: 'int-601', candidateId: 'can-6', date: '2024-08-10', time: '01:00 PM', type: 'AI Screening', status: 'Scheduled' },
 ];
 
 const documents: Document[] = [
