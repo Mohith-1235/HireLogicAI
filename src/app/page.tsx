@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +15,12 @@ import {
 import { Icons } from '@/components/icons';
 import { CandidateApplicationForm } from '@/components/candidate-application-form';
 
-const features = [
+const features: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  href?: string;
+}[] = [
   {
     icon: <Bot className="h-8 w-8 text-primary" />,
     title: 'AI Interviewer',
@@ -25,6 +32,7 @@ const features = [
     title: 'DigiLocker Integration',
     description:
       'Verify candidate certificates and documents securely through DigiLocker with official consent flows.',
+    href: 'https://www.digilocker.gov.in/web/data-exchange',
   },
   {
     icon: <User className="h-8 w-8 text-primary" />,
@@ -120,22 +128,34 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {features.map((feature) => (
-                <Card
-                  key={feature.title}
-                  className="bg-card hover:shadow-lg transition-shadow"
-                >
-                  <CardHeader className="flex flex-row items-center gap-4 pb-4">
-                    {feature.icon}
-                    <CardTitle className="font-headline">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+              {features.map((feature) => {
+                const card = (
+                  <Card
+                    key={feature.title}
+                    className="bg-card hover:shadow-lg transition-shadow h-full"
+                  >
+                    <CardHeader className="flex flex-row items-center gap-4 pb-4">
+                      {feature.icon}
+                      <CardTitle className="font-headline">{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">
+                        {feature.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+
+                if (feature.href) {
+                  return (
+                    <Link href={feature.href} target="_blank" rel="noopener noreferrer" key={feature.title}>
+                      {card}
+                    </Link>
+                  );
+                }
+
+                return card;
+              })}
             </div>
           </div>
         </section>
