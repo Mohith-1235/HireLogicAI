@@ -208,9 +208,9 @@ export default function DashboardLayout({
               </Link>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
-                  <Link href="/dashboard/interviews" passHref legacyBehavior>
-                    <SidebarMenuSubButton asChild isActive={pathname === '/dashboard/interviews'}>
-                      <a>Interviews to Attend</a>
+                  <Link href="/dashboard/interviews">
+                    <SidebarMenuSubButton isActive={pathname === '/dashboard/interviews'}>
+                      Interviews to Attend
                     </SidebarMenuSubButton>
                   </Link>
                 </SidebarMenuSubItem>
