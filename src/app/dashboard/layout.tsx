@@ -241,8 +241,8 @@ export default function DashboardLayout({
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
                   <Link href="/dashboard/interviews">
-                    <SidebarMenuSubButton isActive={pathname === '/dashboard/interviews'}>
-                      Interviews to Attend
+                    <SidebarMenuSubButton asChild isActive={pathname === '/dashboard/interviews'}>
+                      <a>Interviews to Attend</a>
                     </SidebarMenuSubButton>
                   </Link>
                 </SidebarMenuSubItem>
