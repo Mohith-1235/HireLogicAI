@@ -37,6 +37,8 @@ import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { useState } from 'react';
 import { DigiLockerDialog } from '@/components/digilocker-dialog';
+import { AIInterviewDialog } from '@/components/ai-interview-dialog';
+import { useToast } from '@/hooks/use-toast';
 
 const stageVariant: { [key: string]: 'default' | 'secondary' | 'destructive' } = {
   Screening: 'default',
@@ -61,9 +63,11 @@ const interviewStatusIcon: { [key: string]: React.ReactNode } = {
 export default function CandidateDetailPage() {
   const params = useParams();
   const id = params.id as string;
+  const { toast } = useToast();
   const initialCandidate = candidates.find((c) => c.id === id);
   const [candidate, setCandidate] = useState<Candidate | undefined>(initialCandidate);
   const [isLockerOpen, setIsLockerOpen] = useState(false);
+  const [isInterviewOpen, setIsInterviewOpen] = useState(false);
   const [docToVerify, setDocToVerify] = useState<Document['name'] | null>(null);
 
 
@@ -91,10 +95,29 @@ export default function CandidateDetailPage() {
     setDocToVerify(null);
   };
 
+  const handleInterviewComplete = () => {
+    setCandidate(prev => {
+      if (!prev) return;
+      // This is a mock progression. A real app would have more complex logic.
+      const nextStage = prev.stage === 'Screening' ? 'Interview' : 'Offer';
+      return { ...prev, stage: nextStage };
+    });
+    toast({
+      title: 'Interview Completed',
+      description: `${candidate.name} has been moved to the next stage.`,
+    })
+  };
+
   const avatarImage = PlaceHolderImages.find(p => p.id === candidate.avatar);
 
   return (
     <div className="grid gap-6">
+      <AIInterviewDialog
+        isOpen={isInterviewOpen}
+        onOpenChange={setIsInterviewOpen}
+        onInterviewComplete={handleInterviewComplete}
+        candidateName={candidate.name}
+      />
       <DigiLockerDialog
         isOpen={isLockerOpen}
         onOpenChange={setIsLockerOpen}
@@ -125,7 +148,7 @@ export default function CandidateDetailPage() {
                 <Badge variant={stageVariant[candidate.stage] || 'default'} className="text-sm">
                   {candidate.stage}
                 </Badge>
-                <Button>
+                <Button onClick={() => setIsInterviewOpen(true)}>
                   Start AI Interview <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
