@@ -32,6 +32,7 @@ import {
   XCircle,
   Clock,
   ArrowRight,
+  FileText,
 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
@@ -95,17 +96,25 @@ export default function CandidateDetailPage() {
     setDocToVerify(null);
   };
 
-  const handleInterviewComplete = () => {
-    setCandidate(prev => {
-      if (!prev) return;
-      // This is a mock progression. A real app would have more complex logic.
-      const nextStage = prev.stage === 'Screening' ? 'Interview' : 'Offer';
-      return { ...prev, stage: nextStage };
-    });
-    toast({
-      title: 'Interview Completed',
-      description: `${candidate.name} has been moved to the next stage.`,
-    })
+  const handleInterviewComplete = (passed: boolean) => {
+    if (passed) {
+      setCandidate(prev => {
+        if (!prev) return;
+        // This is a mock progression. A real app would have more complex logic.
+        const nextStage = prev.stage === 'Screening' ? 'Interview' : 'Offer';
+        return { ...prev, stage: nextStage };
+      });
+      toast({
+        title: 'Interview Passed!',
+        description: `${candidate.name} has been moved to the next stage.`,
+      })
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Interview Failed',
+        description: `${candidate.name} did not meet the qualification threshold.`,
+      })
+    }
   };
 
   const avatarImage = PlaceHolderImages.find(p => p.id === candidate.avatar);
@@ -116,7 +125,7 @@ export default function CandidateDetailPage() {
         isOpen={isInterviewOpen}
         onOpenChange={setIsInterviewOpen}
         onInterviewComplete={handleInterviewComplete}
-        candidateName={candidate.name}
+        candidate={candidate}
       />
       <DigiLockerDialog
         isOpen={isLockerOpen}
@@ -167,8 +176,11 @@ export default function CandidateDetailPage() {
             <CardHeader>
               <CardTitle className='font-headline'>Candidate Profile</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p>Additional profile information, resume, and skills would be displayed here.</p>
+            <CardContent className="space-y-4">
+              <h3 className="font-semibold flex items-center gap-2"><FileText className="h-5 w-5"/> Resume Summary</h3>
+              <p className="text-muted-foreground bg-secondary p-4 rounded-md">{candidate.resume}</p>
+              <h3 className="font-semibold">Skills</h3>
+              <p>Skills would be extracted from the resume and displayed here.</p>
             </CardContent>
           </Card>
         </TabsContent>

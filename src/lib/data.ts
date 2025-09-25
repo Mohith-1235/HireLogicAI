@@ -8,6 +8,7 @@ export type Candidate = {
   interviews: Interview[];
   documents: Document[];
   lastActivity: string;
+  resume: string;
 };
 
 export type Interview = {
@@ -29,7 +30,7 @@ const interviews: Interview[] = [
   { id: 'int-102', candidateId: 'can-1', date: '2024-08-10', time: '02:00 PM', type: 'Technical', status: 'Scheduled' },
   { id: 'int-201', candidateId: 'can-2', date: '2024-08-06', time: '11:00 AM', type: 'AI Screening', status: 'Completed' },
   { id: 'int-301', candidateId: 'can-3', date: '2024-08-07', time: '09:00 AM', type: 'AI Screening', status: 'Completed' },
-  { id: 'int-302', candidateId: 'can-3', date: '2024-08-12', time: '11:30 AM', type: 'HR Round', status: 'Scheduled' },
+  { id: 'int-302', candidateId: 'can-3', date: '2024-8-12', time: '11:30 AM', type: 'HR Round', status: 'Scheduled' },
   { id: 'int-401', candidateId: 'can-4', date: '2024-08-08', time: '03:00 PM', type: 'AI Screening', status: 'Scheduled' },
   { id: 'int-501', candidateId: 'can-5', date: '2024-08-09', time: '10:30 AM', type: 'AI Screening', status: 'Canceled' },
   { id: 'int-601', candidateId: 'can-6', date: '2024-08-09', time: '01:00 PM', type: 'AI Screening', status: 'Scheduled' },
@@ -56,6 +57,7 @@ export const candidates: Candidate[] = [
       { name: 'Driving Licence', status: 'Not Submitted' },
     ],
     lastActivity: '3 days ago',
+    resume: `Sarah Johnson is a results-driven Senior Frontend Developer with 8 years of experience in building and maintaining responsive and scalable web applications. Proficient in React, TypeScript, and modern JavaScript frameworks. Passionate about creating intuitive user interfaces and seamless user experiences. Proven ability to lead projects and mentor junior developers.`,
   },
   {
     id: 'can-2',
@@ -71,6 +73,7 @@ export const candidates: Candidate[] = [
       { name: 'Driving Licence', status: 'Verified' },
     ],
     lastActivity: '1 day ago',
+    resume: `Michael Chen is a strategic Product Manager with a 6-year track record of launching successful SaaS products. Skilled in market research, user-centric design, and agile methodologies. Excels at collaborating with cross-functional teams to deliver products that meet user needs and business goals.`,
   },
   {
     id: 'can-3',
@@ -82,6 +85,7 @@ export const candidates: Candidate[] = [
     interviews: interviews.filter(i => i.candidateId === 'can-3'),
     documents: documents,
     lastActivity: '5 hours ago',
+    resume: `Emily Rodriguez is a creative UX/UI Designer with a passion for crafting beautiful and functional digital experiences. With 4 years of experience, she is proficient in Figma, Sketch, and Adobe Creative Suite. Specializes in user research, wireframing, and prototyping to create intuitive and engaging designs.`,
   },
   {
     id: 'can-4',
@@ -97,6 +101,7 @@ export const candidates: Candidate[] = [
       { name: 'Driving Licence', status: 'Not Submitted' },
     ],
     lastActivity: '1 week ago',
+    resume: `David Lee is a dedicated Backend Engineer with 5 years of experience in designing and building robust server-side applications. Expertise in Node.js, Python, and database management with PostgreSQL and MongoDB. Experienced in developing RESTful APIs and microservices architecture.`,
   },
   {
     id: 'can-5',
@@ -108,6 +113,7 @@ export const candidates: Candidate[] = [
     interviews: interviews.filter(i => i.candidateId === 'can-5'),
     documents: [],
     lastActivity: '2 weeks ago',
+    resume: `Jessica Williams is an analytical Data Scientist with a knack for turning data into actionable insights. She has 3 years of experience in machine learning, statistical analysis, and data visualization using Python, R, and Tableau. Holds a Master's degree in Data Science.`,
   },
   {
     id: 'can-6',
@@ -123,6 +129,7 @@ export const candidates: Candidate[] = [
       { name: 'Driving Licence', status: 'Not Submitted' },
     ],
     lastActivity: '4 days ago',
+    resume: `Chris Taylor is a skilled DevOps Engineer with 7 years of experience in automating and streamlining development pipelines. Proficient in CI/CD tools like Jenkins, containerization with Docker and Kubernetes, and cloud platforms like AWS. Strong focus on infrastructure as code and system reliability.`,
   },
 ];
 
