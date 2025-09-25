@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader, Send } from 'lucide-react';
+import { Loader, Send, CheckCircle, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const applicationSchema = z.object({
@@ -30,6 +30,7 @@ type ApplicationFormValues = z.infer<typeof applicationSchema>;
 export function CandidateApplicationForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export function CandidateApplicationForm() {
     // Simulate API call
     setTimeout(() => {
         setIsSubmitting(false);
+        setIsSubmitted(true);
         toast({
             title: 'Application Submitted!',
             description: "We've received your information and will be in touch.",
@@ -61,9 +63,37 @@ export function CandidateApplicationForm() {
         form.reset();
     }, 1500);
   };
+  
+  const handleNewApplication = () => {
+    setIsSubmitted(false);
+  }
 
   if (!isClient) {
-    return null; // or a loading skeleton
+    return (
+      <div className="space-y-6">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="space-y-2">
+            <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+            <div className="h-10 w-full bg-muted rounded animate-pulse" />
+          </div>
+        ))}
+        <div className="h-10 w-full bg-muted rounded animate-pulse" />
+      </div>
+    );
+  }
+
+  if (isSubmitted) {
+    return (
+        <div className="text-center py-10 transition-opacity duration-500 animate-in fade-in">
+            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <h3 className="text-2xl font-semibold mb-2">Thank You!</h3>
+            <p className="text-muted-foreground mb-6">Your application has been submitted successfully.</p>
+            <Button onClick={handleNewApplication}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Submit Another Application
+            </Button>
+        </div>
+    )
   }
 
   return (
