@@ -21,6 +21,7 @@ import {
   ClipboardList,
   LogOut,
   ChevronDown,
+  User,
 } from 'lucide-react';
 import { Icons } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -72,6 +73,13 @@ function UserNav() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/profile">
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
@@ -113,6 +121,13 @@ function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/profile">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
@@ -128,6 +143,18 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  const getPageTitle = () => {
+    if (pathname === '/dashboard/profile') {
+      return 'Recruiter Profile';
+    }
+    const navItem = navItems.find((item) => pathname.startsWith(item.href));
+    if (navItem) return navItem.label;
+    if (pathname.startsWith('/dashboard/candidates/')) {
+      return 'Candidate Details';
+    }
+    return 'Dashboard';
+  }
 
   return (
     <SidebarProvider>
@@ -168,10 +195,7 @@ export default function DashboardLayout({
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <h1 className="text-lg font-semibold font-headline">
-              {
-                navItems.find((item) => item.href === pathname)?.label ||
-                'Candidate Details'
-              }
+              {getPageTitle()}
             </h1>
           </div>
         </header>
