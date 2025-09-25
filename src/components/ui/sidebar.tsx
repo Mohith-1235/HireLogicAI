@@ -152,7 +152,7 @@ const SidebarProvider = React.forwardRef<
             ref={ref}
             {...props}
           >
-            {isClient && children}
+            {isClient ? children : null}
           </div>
         </TooltipProvider>
       </SidebarContext.Provider>

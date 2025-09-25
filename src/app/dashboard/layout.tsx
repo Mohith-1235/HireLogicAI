@@ -200,15 +200,17 @@ export default function DashboardLayout({
               </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
+              <Link href="/dashboard/interviews">
                 <SidebarMenuButton isActive={pathname.startsWith('/dashboard/interviews')} tooltip={{ children: 'Interviews' }}>
                   <Calendar />
                   <span>Interviews</span>
                 </SidebarMenuButton>
+              </Link>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
-                  <Link href="/dashboard/interviews">
-                    <SidebarMenuSubButton isActive={pathname === '/dashboard/interviews'}>
-                        Interviews to Attend
+                  <Link href="/dashboard/interviews" passHref>
+                    <SidebarMenuSubButton asChild isActive={pathname === '/dashboard/interviews'}>
+                        <a>Interviews to Attend</a>
                     </SidebarMenuSubButton>
                   </Link>
                 </SidebarMenuSubItem>
