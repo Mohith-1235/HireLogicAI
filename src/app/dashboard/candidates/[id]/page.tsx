@@ -34,7 +34,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { useState } from 'react';
 import { DigiLockerDialog } from '@/components/digilocker-dialog';
 
@@ -58,12 +58,10 @@ const interviewStatusIcon: { [key: string]: React.ReactNode } = {
   Canceled: <XCircle className="h-4 w-4 text-red-500" />,
 };
 
-export default function CandidateDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const initialCandidate = candidates.find((c) => c.id === params.id);
+export default function CandidateDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
+  const initialCandidate = candidates.find((c) => c.id === id);
   const [candidate, setCandidate] = useState<Candidate | undefined>(initialCandidate);
   const [isLockerOpen, setIsLockerOpen] = useState(false);
   const [docToVerify, setDocToVerify] = useState<Document['name'] | null>(null);
