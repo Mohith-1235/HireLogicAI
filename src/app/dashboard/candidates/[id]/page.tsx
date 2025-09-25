@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -17,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { candidates, type Document } from '@/lib/data';
+import { candidates, type Document, type Candidate } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import {
   ShieldCheck,
@@ -29,10 +31,12 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  ArrowRight
+  ArrowRight,
 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { useState } from 'react';
+import { DigiLockerDialog } from '@/components/digilocker-dialog';
 
 const stageVariant: { [key: string]: 'default' | 'secondary' | 'destructive' } = {
   Screening: 'default',
@@ -49,26 +53,57 @@ const documentStatusIcon: { [key: string]: React.ReactNode } = {
 };
 
 const interviewStatusIcon: { [key: string]: React.ReactNode } = {
-    Completed: <CheckCircle className="h-4 w-4 text-green-500" />,
-    Scheduled: <Clock className="h-4 w-4 text-blue-500" />,
-    Canceled: <XCircle className="h-4 w-4 text-red-500" />,
-  };
+  Completed: <CheckCircle className="h-4 w-4 text-green-500" />,
+  Scheduled: <Clock className="h-4 w-4 text-blue-500" />,
+  Canceled: <XCircle className="h-4 w-4 text-red-500" />,
+};
 
 export default function CandidateDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const candidate = candidates.find((c) => c.id === params.id);
+  const initialCandidate = candidates.find((c) => c.id === params.id);
+  const [candidate, setCandidate] = useState<Candidate | undefined>(initialCandidate);
+  const [isLockerOpen, setIsLockerOpen] = useState(false);
+  const [docToVerify, setDocToVerify] = useState<Document['name'] | null>(null);
+
 
   if (!candidate) {
     notFound();
   }
 
+  const handleVerificationRequest = (docName: Document['name']) => {
+    setDocToVerify(docName);
+    setIsLockerOpen(true);
+  };
+  
+  const handleVerificationComplete = () => {
+    if (docToVerify) {
+        setCandidate(prev => {
+            if (!prev) return;
+            const newDocs = prev.documents.map(d => d.name === docToVerify ? {...d, status: 'Pending' as const} : d);
+            const docExists = prev.documents.some(d => d.name === docToVerify);
+            if (!docExists) {
+                newDocs.push({name: docToVerify, status: 'Pending'});
+            }
+            return {...prev, documents: newDocs};
+        });
+    }
+    setDocToVerify(null);
+  };
+
   const avatarImage = PlaceHolderImages.find(p => p.id === candidate.avatar);
 
   return (
     <div className="grid gap-6">
+      <DigiLockerDialog
+        isOpen={isLockerOpen}
+        onOpenChange={setIsLockerOpen}
+        onVerificationComplete={handleVerificationComplete}
+        documentName={docToVerify}
+        candidateName={candidate.name}
+      />
       <Card>
         <CardHeader>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -138,7 +173,7 @@ export default function CandidateDetailPage({
                     <CardContent>
                       <div className="text-xl font-bold">{doc.status}</div>
                       {doc.status !== 'Verified' && (
-                        <Button variant="link" className="p-0 h-auto mt-1">
+                        <Button variant="link" className="p-0 h-auto mt-1" onClick={() => handleVerificationRequest(doc.name)}>
                           Request Verification
                         </Button>
                       )}
