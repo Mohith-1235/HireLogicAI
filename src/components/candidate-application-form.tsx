@@ -21,6 +21,8 @@ const applicationSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
   email: z.string().email('Please enter a valid email address.'),
   role: z.string().min(3, 'Role must be at least 3 characters.'),
+  highestEducation: z.string().min(2, 'Highest education must be at least 2 characters.'),
+  skills: z.string().min(2, 'Skills must be at least 2 characters.'),
 });
 
 type ApplicationFormValues = z.infer<typeof applicationSchema>;
@@ -40,6 +42,8 @@ export function CandidateApplicationForm() {
       name: '',
       email: '',
       role: '',
+      highestEducation: '',
+      skills: '',
     },
   });
 
@@ -99,6 +103,32 @@ export function CandidateApplicationForm() {
               <FormLabel>Desired Role</FormLabel>
               <FormControl>
                 <Input placeholder="e.g. Senior Frontend Developer" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="highestEducation"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Highest Education</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g. Bachelor's in Computer Science" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="skills"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Skills</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g. React, TypeScript, Node.js" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
