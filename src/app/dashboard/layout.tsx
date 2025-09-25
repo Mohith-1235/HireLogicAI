@@ -12,8 +12,8 @@ import {
   SidebarTrigger,
   useSidebar,
   SidebarMenuSub,
-  SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarMenuSubButton,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -63,6 +63,7 @@ function UserNav() {
   const router = useRouter();
 
   const handleLogout = async () => {
+    if (!auth) return;
     await signOut(auth);
     router.push('/login');
   };
@@ -238,9 +239,9 @@ export default function DashboardLayout({
               </Link>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
-                  <Link href="/dashboard/interviews" passHref>
-                    <SidebarMenuSubButton asChild isActive={pathname === '/dashboard/interviews'}>
-                      <a>Interviews to Attend</a>
+                  <Link href="/dashboard/interviews">
+                    <SidebarMenuSubButton isActive={pathname === '/dashboard/interviews'}>
+                      Interviews to Attend
                     </SidebarMenuSubButton>
                   </Link>
                 </SidebarMenuSubItem>
