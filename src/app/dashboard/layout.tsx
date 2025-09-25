@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -36,6 +37,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useEffect, useState } from 'react';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -67,7 +69,7 @@ function UserNav() {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">Jane Doe</p>
-              <p className="text-xs leading-none text-muted-foreground">
+              <p className="text-xs leading-none text-foreground/80">
                 recruiter@hirelogic.ai
               </p>
             </div>
@@ -115,7 +117,7 @@ function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">Jane Doe</p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p className="text-xs leading-none text-foreground/80">
               recruiter@hirelogic.ai
             </p>
           </div>
@@ -143,6 +145,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const getPageTitle = () => {
     if (pathname === '/dashboard/profile') {
@@ -169,6 +176,7 @@ export default function DashboardLayout({
             </Link>
           </div>
         </SidebarHeader>
+        {isClient && (
         <SidebarContent className="p-2">
           <SidebarMenu>
             {navItems.map((item) => (
@@ -186,6 +194,7 @@ export default function DashboardLayout({
             ))}
           </SidebarMenu>
         </SidebarContent>
+        )}
         <div className="mt-auto p-2 border-t border-sidebar-border">
           <UserNav />
         </div>
