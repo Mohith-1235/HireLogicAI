@@ -38,7 +38,7 @@ const features: {
     icon: <User className="h-8 w-8 text-primary" />,
     title: 'Candidate Profile Management',
     description:
-      'Store and manage candidate profiles, interview history, and verified documents in one place.',
+      'Store and manage candidate profiles, interview history, and user verified documents in one place.',
   },
   {
     icon: <Calendar className="h-8 w-8 text-primary" />,
