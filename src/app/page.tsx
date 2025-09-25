@@ -11,7 +11,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Icons } from '@/components/icons';
-import { QuestionnaireForm } from '@/components/questionnaire-form';
+import { CandidateApplicationForm } from '@/components/candidate-application-form';
 
 const features = [
   {
@@ -83,27 +83,26 @@ export default function LandingPage() {
               analytics.
             </p>
             <Button size="lg" asChild>
-              <Link href="#generate-questionnaire">
-                Get Started Now <ArrowRight className="ml-2 h-5 w-5" />
+              <Link href="#apply-now">
+                Apply Now <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
         </section>
 
-        <section id="generate-questionnaire" className="py-20 bg-background">
+        <section id="apply-now" className="py-20 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold font-headline">
-                Generate an Interview Questionnaire
+                Apply to Join Our Talent Pool
               </h2>
               <p className="max-w-xl mx-auto text-muted-foreground mt-2">
-                Paste a job description below and our AI will generate a
-                relevant screening questionnaire in seconds.
+                Interested in future opportunities? Submit your details below and we'll reach out when a matching role opens up.
               </p>
             </div>
-            <Card className="max-w-4xl mx-auto">
+            <Card className="max-w-2xl mx-auto">
               <CardContent className="p-6">
-                <QuestionnaireForm />
+                <CandidateApplicationForm />
               </CardContent>
             </Card>
           </div>
