@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "UserAccount": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserAccount",
+      "type": "object",
+      "description": "Stores user account information for the HireLogic AI application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user account."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address for login and communication.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the user account was created.",
+          "format": "date-time"
+        },
+        "lastLogin": {
+          "type": "string",
+          "description": "Timestamp indicating the user's last login.",
+          "format": "date-time"
+        },
+        "termsOfServiceAccepted": {
+          "type": "boolean",
+          "description": "Flag indicating whether the user has accepted the terms of service."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "firstName",
+        "lastName",
+        "createdAt",
+        "termsOfServiceAccepted"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/userAccounts/{userAccountId}",
+        "definition": {
+          "entityName": "UserAccount",
+          "schema": {
+            "$ref": "#/backend/entities/UserAccount"
+          },
+          "description": "Stores user account information. The 'userAccountId' parameter corresponds to the user's Firebase Auth UID, ensuring path-based ownership.",
+          "params": [
+            {
+              "name": "userAccountId",
+              "description": "The unique identifier for the user account, which matches the Firebase Auth UID."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The data structure prioritizes simplicity and security. User accounts are stored in a dedicated collection. This structure enables simple security rules based on `request.auth.uid` and supports QAPs because each collection has a homogeneous security posture. The application focuses on AI interviewing, document verification, and candidate management; thus the structure is tailored to efficiently store and retrieve user data related to these activities, while adhering to the core design principles of Authorization Independence and Clarity of Intent."
+  }
+}
