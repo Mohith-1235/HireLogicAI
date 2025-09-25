@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -239,7 +240,7 @@ export default function DashboardLayout({
               </Link>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
-                  <Link href="/dashboard/interviews">
+                  <Link href="/dashboard/interviews" passHref legacyBehavior>
                     <SidebarMenuSubButton isActive={pathname === '/dashboard/interviews'}>
                       Interviews to Attend
                     </SidebarMenuSubButton>
