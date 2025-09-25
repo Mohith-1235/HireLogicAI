@@ -1,3 +1,6 @@
+
+'use client';
+
 import {
   Card,
   CardContent,
@@ -26,6 +29,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const stageVariant: { [key: string]: 'default' | 'secondary' | 'destructive' | 'outline' } = {
   Screening: 'outline',
@@ -36,6 +40,12 @@ const stageVariant: { [key: string]: 'default' | 'secondary' | 'destructive' | '
 };
 
 export default function CandidatesPage() {
+  const router = useRouter();
+
+  const handleRowClick = (candidateId: string) => {
+    router.push(`/dashboard/candidates/${candidateId}`);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -59,7 +69,7 @@ export default function CandidatesPage() {
             {candidates.map((candidate) => {
               const avatarImage = PlaceHolderImages.find(p => p.id === candidate.avatar);
               return (
-              <TableRow key={candidate.id}>
+              <TableRow key={candidate.id} onClick={() => handleRowClick(candidate.id)} className="cursor-pointer">
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
@@ -79,7 +89,7 @@ export default function CandidatesPage() {
                   </Badge>
                 </TableCell>
                 <TableCell>{candidate.lastActivity}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
