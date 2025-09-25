@@ -171,7 +171,7 @@ export default function DashboardLayout({
           <div className="flex items-center gap-2 w-full p-1">
             <Link href="/" className="flex items-center gap-2">
               <Icons.logo className="h-8 w-8 text-sidebar-primary" />
-              <span className="font-bold text-lg text-sidebar-primary-foreground font-headline">
+              <span className="font-bold text-lg text-sidebar-foreground font-headline">
                 HireLogic AI
               </span>
             </Link>
