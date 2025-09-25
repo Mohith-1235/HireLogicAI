@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import {
@@ -18,7 +16,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Users,
@@ -42,6 +40,9 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useEffect, useState } from 'react';
+import { useAuth, useUser } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -55,8 +56,20 @@ const navItems = [
 ];
 
 function UserNav() {
-  const { isMobile, open, state } = useSidebar();
+  const { isMobile, state } = useSidebar();
   const avatarImage = PlaceHolderImages.find(img => img.id === 'candidate-4');
+  const { user, isUserLoading } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/login');
+  };
+
+  if (isUserLoading) {
+    return <Skeleton className="h-10 w-full" />;
+  }
 
   if (isMobile || state === 'collapsed') {
     return (
@@ -64,17 +77,17 @@ function UserNav() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-10 w-10 rounded-full">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={avatarImage?.imageUrl} alt="Recruiter" data-ai-hint={avatarImage?.imageHint} />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarImage src={user?.photoURL || avatarImage?.imageUrl} alt={user?.displayName || "Recruiter"} data-ai-hint={avatarImage?.imageHint} />
+              <AvatarFallback>{user?.displayName?.slice(0, 2) || 'JD'}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Jane Doe</p>
+              <p className="text-sm font-medium leading-none">{user?.displayName || 'Jane Doe'}</p>
               <p className="text-xs leading-none text-muted-foreground dark:text-white">
-                recruiter@hirelogic.ai
+                {user?.email || 'recruiter@hirelogic.ai'}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -86,7 +99,7 @@ function UserNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>
@@ -104,13 +117,13 @@ function UserNav() {
         >
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={avatarImage?.imageUrl} alt="Recruiter" data-ai-hint={avatarImage?.imageHint}/>
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarImage src={user?.photoURL || avatarImage?.imageUrl} alt={user?.displayName || 'Recruiter'} data-ai-hint={avatarImage?.imageHint}/>
+              <AvatarFallback>{user?.displayName?.slice(0, 2) || 'JD'}</AvatarFallback>
             </Avatar>
             <div className="flex-1 truncate">
-              <p className="text-sm font-medium leading-tight truncate">Jane Doe</p>
+              <p className="text-sm font-medium leading-tight truncate">{user?.displayName || 'Jane Doe'}</p>
               <p className="text-xs text-muted-foreground dark:text-white truncate">
-                recruiter@hirelogic.ai
+                {user?.email || 'recruiter@hirelogic.ai'}
               </p>
             </div>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -120,9 +133,9 @@ function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Jane Doe</p>
+            <p className="text-sm font-medium leading-none">{user?.displayName || 'Jane Doe'}</p>
             <p className="text-xs leading-none text-muted-foreground dark:text-white">
-              recruiter@hirelogic.ai
+              {user?.email || 'recruiter@hirelogic.ai'}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -134,7 +147,7 @@ function UserNav() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
@@ -150,10 +163,19 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
+  const { user, isUserLoading } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+  
+  useEffect(() => {
+    if (isClient && !isUserLoading && !user) {
+      router.push('/login');
+    }
+  }, [isClient, isUserLoading, user, router]);
+
 
   const getPageTitle = () => {
     if (pathname === '/dashboard/profile') {
@@ -165,6 +187,14 @@ export default function DashboardLayout({
       return 'Candidate Details';
     }
     return 'Dashboard';
+  }
+
+  if (isUserLoading || !user) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
+      </div>
+    );
   }
 
   return (

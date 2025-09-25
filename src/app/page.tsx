@@ -73,7 +73,7 @@ export default function LandingPage() {
             </span>
           </Link>
           <Button asChild>
-            <Link href="/dashboard">
+            <Link href="/login">
               Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
