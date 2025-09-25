@@ -13,6 +13,9 @@ import {
   SidebarInset,
   SidebarTrigger,
   useSidebar,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -171,7 +174,7 @@ export default function DashboardLayout({
           <div className="flex items-center gap-2 w-full p-1">
             <Link href="/" className="flex items-center gap-2">
               <Icons.logo className="h-8 w-8 text-sidebar-primary" />
-              <span className="font-bold text-lg text-sidebar-foreground font-headline">
+              <span className="font-bold text-lg text-sidebar-foreground font-headline text-white">
                 HireLogic AI
               </span>
             </Link>
@@ -180,19 +183,45 @@ export default function DashboardLayout({
         {isClient ? (
         <SidebarContent className="p-2">
           <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <Link href={item.href}>
-                  <SidebarMenuButton
-                    isActive={pathname === item.href}
-                    tooltip={{ children: item.label }}
-                  >
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-            ))}
+            <SidebarMenuItem>
+              <Link href="/dashboard">
+                <SidebarMenuButton isActive={pathname === '/dashboard'} tooltip={{ children: 'Dashboard' }}>
+                  <LayoutDashboard />
+                  <span>Dashboard</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <Link href="/dashboard/candidates">
+                <SidebarMenuButton isActive={pathname.startsWith('/dashboard/candidates')} tooltip={{ children: 'Candidates' }}>
+                  <Users />
+                  <span>Candidates</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname.startsWith('/dashboard/interviews')} tooltip={{ children: 'Interviews' }}>
+                  <Calendar />
+                  <span>Interviews</span>
+                </SidebarMenuButton>
+              <SidebarMenuSub>
+                <SidebarMenuSubItem>
+                  <Link href="/dashboard/interviews">
+                    <SidebarMenuSubButton isActive={pathname === '/dashboard/interviews'}>
+                        Interviews to Attend
+                    </SidebarMenuSubButton>
+                  </Link>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <Link href="/dashboard/questionnaires">
+                <SidebarMenuButton isActive={pathname.startsWith('/dashboard/questionnaires')} tooltip={{ children: 'Questionnaires' }}>
+                  <ClipboardList />
+                  <span>Questionnaires</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
         ) : (
